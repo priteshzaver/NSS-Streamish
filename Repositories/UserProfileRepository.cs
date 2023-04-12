@@ -132,7 +132,7 @@ namespace Streamish.Repositories
             }
         }
 
-        public UserProfile GetUserByIdWithVideos(int id)
+        public UserProfile GetUserByIdWithVideosAndComments(int id)
         {
             using (var conn = Connection)
             {
@@ -140,9 +140,11 @@ namespace Streamish.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT up.Id AS UserId, up.Name, up.Email, up.DateCreated AS UserProfileDateCreated, up.ImageUrl AS UserProfileImageUrl,
-                                        v.Id AS VideoId, v.Title, v.Description, v.Url, v.DateCreated AS VideoDateCreated, v.UserProfileId As VideoUserProfileId
+                                        v.Id AS VideoId, v.Title, v.Description, v.Url, v.DateCreated AS VideoDateCreated, v.UserProfileId As VideoUserProfileId,
+                                        c.Id AS CommentId, c.Message, c.UserProfileId AS CommentUserProfileId, c.VideoId AS CommentVideoId
                                         FROM UserProfile up
                                         JOIN Video v ON v.UserProfileId = up.Id
+                                        LEFT JOIN Comment c on c.VideoId = v.id
                                         WHERE up.Id = @Id";
 
                     DbUtils.AddParameter(cmd, "@Id", id);
@@ -162,7 +164,8 @@ namespace Streamish.Repositories
                                     Email = DbUtils.GetString(reader, "Email"),
                                     ImageUrl = DbUtils.GetString(reader, "UserProfileImageUrl"),
                                     DateCreated = DbUtils.GetDateTime(reader, "UserProfileDateCreated"),
-                                    Videos = new List<Video>()
+                                    Videos = new List<Video>(),
+                                    Comments = new List<Comment>()
                                 };
                             }
                             if (DbUtils.IsNotDbNull(reader, "VideoId"))
@@ -177,6 +180,17 @@ namespace Streamish.Repositories
                                     UserProfileId = DbUtils.GetInt(reader, "VideoUserProfileId"),
                                 });
                             }
+                            if (DbUtils.IsNotDbNull(reader, "CommentId"))
+                            {
+                                user.Comments.Add(new Comment()
+                                {
+                                    Id = DbUtils.GetInt(reader, "CommentId"),
+                                    Message = DbUtils.GetString(reader, "Message"),
+                                    VideoId = DbUtils.GetInt(reader, "CommentVideoId"),
+                                    UserProfileId = DbUtils.GetInt(reader, "CommentUserProfileId")
+                                });
+                            }
+
                         }
                         return user;
                     }
