@@ -10,7 +10,7 @@ namespace Streamish.Repositories
         List<UserProfile> GetAll();
         UserProfile GetById(int id);
         void Update(UserProfile user);
-        public UserProfile GetUserByIdWithVideos(int id);
+        public UserProfile GetUserByIdWithVideosAndComments(int id);
         public List<UserProfile> GetAllUsersWithVideos();
     }
 }
