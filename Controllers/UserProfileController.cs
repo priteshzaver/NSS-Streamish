@@ -68,5 +68,12 @@ namespace Streamish.Controllers
             }
             return Ok(user);
         }
+
+        [HttpGet("GetWithVideos")]
+        public IActionResult GetWithVideos()
+        {
+            var users = _userProfileRepository.GetAllUsersWithVideos();
+            return Ok(users);
+        }
     }
 }
