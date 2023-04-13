@@ -5,7 +5,7 @@ import VideoResult from "./VideoResult";
 const SearchVideos = () => {
     const [searchedVideos, setSearchedVideos] = useState([]);
     const [queryString, setQueryString] = useState("")
-    const [sortDescBool, setSortDescBool] = useState([])
+    const [sortDescBool, setSortDescBool] = useState(false)
     
     return <article>
             <h2>Search</h2>
