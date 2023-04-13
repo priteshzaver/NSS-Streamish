@@ -4,11 +4,10 @@ import { getAllVideosAndComments } from "../modules/videoManager";
 
 const VideoList = () => {
   const [videos, setVideos] = useState([]);
-  
+
   const getVideos = () => {
     getAllVideosAndComments().then(videos => setVideos(videos));
   };
-
 
   useEffect(() => {
     getVideos();
