@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import React, { useState } from "react";
+import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import { addVideo } from "../modules/videoManager";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-const VideoForm = ({ getVideos }) => {
+const VideoForm = ({}) => {
   const navigate = useNavigate();
   const emptyVideo = {
-    title: '',
-    description: '',
-    url: ''
+    title: "",
+    description: "",
+    url: "",
   };
 
   const [video, setVideo] = useState(emptyVideo);
@@ -29,31 +29,49 @@ const VideoForm = ({ getVideos }) => {
     addVideo(video).then((p) => {
       // Navigate the user back to the home route
       navigate("/");
-  });    
+    });
   };
 
   return (
-    <Form>
-      <FormGroup>
-        <Label for="title">Title</Label>
-        <Input type="text" name="title" id="title" placeholder="video title"
-          value={video.title}
-          onChange={handleInputChange} />
-      </FormGroup>
-      <FormGroup>
-        <Label for="url">URL</Label>
-        <Input type="text" name="url" id="url" placeholder="video link" 
-          value={video.url}
-          onChange={handleInputChange} />
-      </FormGroup>
-      <FormGroup>
-        <Label for="description">Description</Label>
-        <Input type="textarea" name="description" id="description"
-          value={video.description}
-          onChange={handleInputChange} />
-      </FormGroup>
-      <Button className="btn btn-primary" onClick={handleSave}>Submit</Button>
-    </Form>
+    <div className="container">
+      <Form>
+        <FormGroup>
+          <Label for="title">Title</Label>
+          <Input
+            type="text"
+            name="title"
+            id="title"
+            placeholder="video title"
+            value={video.title}
+            onChange={handleInputChange}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label for="url">URL</Label>
+          <Input
+            type="text"
+            name="url"
+            id="url"
+            placeholder="video link"
+            value={video.url}
+            onChange={handleInputChange}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label for="description">Description</Label>
+          <Input
+            type="textarea"
+            name="description"
+            id="description"
+            value={video.description}
+            onChange={handleInputChange}
+          />
+        </FormGroup>
+        <Button className="btn btn-primary" onClick={handleSave}>
+          Submit
+        </Button>
+      </Form>
+    </div>
   );
 };
 
