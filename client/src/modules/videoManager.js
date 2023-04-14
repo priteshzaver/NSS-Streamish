@@ -24,3 +24,7 @@ export const searchVideos = (queryString, sortDescBool) => {
     return fetch(`${baseUrl}/search?q=${queryString}&sortDesc=${sortDescBool}`)
     .then((res) => res.json())
 }
+
+export const getVideo = (id) => {
+  return fetch(`${baseUrl}/${id}`).then((res) => res.json());
+};

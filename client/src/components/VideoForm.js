@@ -1,55 +1,60 @@
-import { useState } from "react"
-import { addVideo, getAllVideos } from "../modules/videoManager"
+import React, { useState } from 'react';
+import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { addVideo } from "../modules/videoManager";
+import { useNavigate } from 'react-router-dom';
 
-export const VideoForm = ({ getVideos }) => {
-    const [newVideo, setNewVideo] = useState({
-        title: "",
-        description: "",
-        url: ""
-    })
+const VideoForm = ({ getVideos }) => {
+  const navigate = useNavigate();
+  const emptyVideo = {
+    title: '',
+    description: '',
+    url: ''
+  };
 
-    const addNewVideoButton = () => {
-        const videoToSendToApi = newVideo
-        addVideo(videoToSendToApi)
-        .then(() => {
-            getVideos()
-        })
-    }
+  const [video, setVideo] = useState(emptyVideo);
 
+  const handleInputChange = (evt) => {
+    const value = evt.target.value;
+    const key = evt.target.id;
 
-    return <article>
-        <form>            
-            <input
-                type="text"
-                placeholder="Title"
-                onChange={(changeEvent) => {
-                    const copy = { ...newVideo }
-                    copy.title = changeEvent.target.value
-                    setNewVideo(copy)
-                }}
-                />
-            <input
-                type="text"
-                placeholder="Description"
-                onChange={(changeEvent) => {
-                    const copy = { ...newVideo }
-                    copy.description = changeEvent.target.value
-                    setNewVideo(copy)
-                }}
-                />
-            <input
-                type="url"
-                placeholder="Url"
-                onChange={(changeEvent) => {
-                    const copy = { ...newVideo }
-                    copy.url = changeEvent.target.value
-                    setNewVideo(copy)
-                }}
-                />
-            <button
-                onClick={() => addNewVideoButton()}>
-                    Add
-            </button>
-        </form>
-    </article>
-}
+    const videoCopy = { ...video };
+
+    videoCopy[key] = value;
+    setVideo(videoCopy);
+  };
+
+  const handleSave = (evt) => {
+    evt.preventDefault();
+
+    addVideo(video).then((p) => {
+      // Navigate the user back to the home route
+      navigate("/");
+  });    
+  };
+
+  return (
+    <Form>
+      <FormGroup>
+        <Label for="title">Title</Label>
+        <Input type="text" name="title" id="title" placeholder="video title"
+          value={video.title}
+          onChange={handleInputChange} />
+      </FormGroup>
+      <FormGroup>
+        <Label for="url">URL</Label>
+        <Input type="text" name="url" id="url" placeholder="video link" 
+          value={video.url}
+          onChange={handleInputChange} />
+      </FormGroup>
+      <FormGroup>
+        <Label for="description">Description</Label>
+        <Input type="textarea" name="description" id="description"
+          value={video.description}
+          onChange={handleInputChange} />
+      </FormGroup>
+      <Button className="btn btn-primary" onClick={handleSave}>Submit</Button>
+    </Form>
+  );
+};
+
+export default VideoForm;
