@@ -67,3 +67,7 @@ C:\Users\Pinto\workspace\Streamish\obj\Debug\net5.0\refint\Streamish.dll
 C:\Users\Pinto\workspace\Streamish\obj\Debug\net5.0\Streamish.pdb
 C:\Users\Pinto\workspace\Streamish\obj\Debug\net5.0\Streamish.genruntimeconfig.cache
 C:\Users\Pinto\workspace\Streamish\obj\Debug\net5.0\ref\Streamish.dll
+C:\Users\Pinto\workspace\Streamish\bin\Debug\net5.0\client\package-lock.json
+C:\Users\Pinto\workspace\Streamish\bin\Debug\net5.0\client\package.json
+C:\Users\Pinto\workspace\Streamish\bin\Debug\net5.0\client\public\manifest.json
+C:\Users\Pinto\workspace\Streamish\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

@@ -1,15 +1,17 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import VideoList from "./VideoList";
 import VideoForm from "./VideoForm";
 import { UserVideos } from "./UserVideos";
 import VideoDetails from "./VideoDetails";
+import Login from "./Login";
+import Register from "./Register";
 
-const ApplicationViews = () => {
+const ApplicationViews = ({ isLoggedIn }) => {
   return (
     <Routes>
       <Route path="/" >
-        <Route index element={<VideoList/>} />
+        <Route index element={isLoggedIn ? <VideoList/> : <Navigate to="/login" />} />
         <Route path="videos">
           <Route index element={<VideoList/>} />
           <Route path="add" element={<VideoForm/>} />
@@ -18,6 +20,8 @@ const ApplicationViews = () => {
         <Route path="users">
           <Route path=":id" element={<UserVideos /> } />
         </Route>
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
       </Route>
       <Route path="*" element={<p>Whoops, nothing here...</p>} />
     </Routes>
