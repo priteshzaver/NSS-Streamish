@@ -224,9 +224,11 @@ namespace Streamish.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     var sql = @"SELECT v.Id AS VideoId, v.Title, v.Description, v.Url, v.DateCreated AS VideoDateCreated, v.UserProfileId AS VideoUserProfileId,
-                                up.Name, up.Email, up.DateCreated AS UserProfileDateCreated, up.ImageUrl AS UserProfileImageUrl
+                                up.Name, up.Email, up.DateCreated AS UserProfileDateCreated, up.ImageUrl AS UserProfileImageUrl,
+                                c.Id AS CommentId, c.Message, c.UserProfileId AS CommentUserProfileId
                                 FROM Video v 
                                 JOIN UserProfile up ON v.UserProfileId = up.Id
+                                LEFT JOIN Comment c on c.VideoId = v.id
                                 WHERE v.Title LIKE @Criterion OR v.Description LIKE @Criterion";
 
                     if (sortDescending)
@@ -246,7 +248,19 @@ namespace Streamish.Repositories
                         var videos = new List<Video>();
                         while (reader.Read())
                         {
-                            videos.Add(NewVideoFromReader(reader));
+                            var videoId = DbUtils.GetInt(reader, "VideoId");
+                            var existingVideo = videos.FirstOrDefault(p => p.Id == videoId);
+                            if (existingVideo == null)
+                            {
+                                existingVideo = NewVideoWithCommentsFromReader(reader, videoId);
+
+                                videos.Add(existingVideo);
+                            }
+
+                            if (DbUtils.IsNotDbNull(reader, "CommentId"))
+                            {
+                                existingVideo.Comments.Add(NewCommentFromReader(reader, videoId));
+                            }
                         }
                         return videos;
                     }

@@ -15,6 +15,7 @@ namespace Streamish.Models
         public string Email { get; set; }
 
         public string ImageUrl { get; set; }
+        public string FirebaseUserId { get; set; }
 
         public DateTime DateCreated { get; set; }
         public List<Video> Videos { get; set; }
